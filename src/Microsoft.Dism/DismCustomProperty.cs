@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Dism
 {
@@ -45,6 +46,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents the custom properties of a package. Custom properties are any properties that are not found in <see cref="DismPackage"/> or <see cref="DismFeature"/>.
     /// </summary>
+    [DataContract]
     public class DismCustomProperty : IEquatable<DismCustomProperty>
     {
         private readonly DismApi.DismCustomProperty_ _customProperty;
@@ -69,19 +71,34 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Gets the name of the custom property.
+        /// Gets or sets the name of the custom property.
         /// </summary>
-        public string Name => _customProperty.Name;
+        [DataMember]
+        public string Name
+        {
+            get { return _customProperty.Name; }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the value of the custom property.
+        /// Gets or sets the value of the custom property.
         /// </summary>
-        public string Path => _customProperty.Path;
+        [DataMember]
+        public string Path
+        {
+            get { return _customProperty.Path; }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the value of the custom property.
+        /// Gets or sets the value of the custom property.
         /// </summary>
-        public string Value => _customProperty.Value;
+        [DataMember]
+        public string Value
+        {
+            get { return _customProperty.Value; }
+            set { }
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.

@@ -103,12 +103,28 @@ namespace Microsoft.Dism
     /// <summary>
     /// Provides utility functions related to DismApi.
     /// </summary>
-    internal static class DismUtilities
+    public static class DismUtilities
     {
         /// <summary>
         /// The handle of the loaded DISM generational library.
         /// </summary>
         private static IntPtr _hDismApi;
+
+        /// <summary>
+        /// Gets or sets hDismApi stylecop
+        /// </summary>
+        public static IntPtr DismApiLibraryHandle
+        {
+            get
+            {
+                return _hDismApi;
+            }
+
+            set
+            {
+                _hDismApi = value;
+            }
+        }
 
         /// <summary>
         /// Gets the file path of "dismapi.dll", if installed, which is the entry point for the DISM API in the Windows 10.x generation of tools (WADK).
@@ -316,7 +332,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Native methods necessary for manually loading and unloading Win32 libraries.
         /// </summary>
-        internal static class NativeMethods
+        public static class NativeMethods
         {
             /// <summary>
             /// Frees the loaded dynamic-link library (DLL) module and, if necessary, decrements its reference count. When the reference count reaches zero, the module is unloaded from the address space of the calling process and the handle is no longer valid.

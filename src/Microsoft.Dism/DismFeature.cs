@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Dism
 {
@@ -39,6 +40,7 @@ namespace Microsoft.Dism
     /// <summary>
     /// Describes basic information about a feature, such as the feature name and feature state.
     /// </summary>
+    [DataContract]
     public sealed class DismFeature : IEquatable<DismFeature>
     {
         private readonly DismApi.DismFeature_ _feature;
@@ -62,14 +64,24 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Gets the name of the feature.
+        /// Gets or sets the name of the feature.
         /// </summary>
-        public string FeatureName => _feature.FeatureName;
+        [DataMember]
+        public string FeatureName
+        {
+            get { return _feature.FeatureName; }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the state of the feature.
+        /// Gets or sets the state of the feature.
         /// </summary>
-        public DismPackageFeatureState State => _feature.State;
+        [DataMember]
+        public DismPackageFeatureState State
+        {
+            get { return _feature.State; }
+            set { }
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -121,6 +133,7 @@ namespace Microsoft.Dism
         internal DismFeatureCollection(IList<DismFeature> list)
             : base(list)
         {
+
         }
     }
 }

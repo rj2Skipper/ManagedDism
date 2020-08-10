@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace Microsoft.Dism
 {
@@ -69,6 +70,8 @@ namespace Microsoft.Dism
     /// <summary>
     /// Represents advanced feature information, such as installed state and whether a restart is required after installation.
     /// </summary>
+    [DataContract]
+    [KnownType(typeof(DismCustomProperty))]
     public sealed class DismFeatureInfo : IEquatable<DismFeatureInfo>
     {
         private readonly DismApi.DismFeatureInfo_ _featureInfo;
@@ -102,32 +105,58 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets a list of custom properties associated with the feature.
         /// </summary>
+        [DataMember]
         public DismCustomPropertyCollection CustomProperties { get; } = new DismCustomPropertyCollection();
 
         /// <summary>
-        /// Gets the description of the feature.
+        /// Gets or sets the description of the feature.
         /// </summary>
-        public string Description => _featureInfo.Description;
+        [DataMember]
+        public string Description
+        {
+            get { return _featureInfo.Description;  }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the display name of the feature. This is not always unique across all features.
+        /// Gets or sets the display name of the feature. This is not always unique across all features.
         /// </summary>
-        public string DisplayName => _featureInfo.DisplayName;
+        [DataMember]
+        public string DisplayName
+        {
+            get { return _featureInfo.DisplayName; }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the name of the feature.
+        /// Gets or sets the name of the feature.
         /// </summary>
-        public string FeatureName => _featureInfo.FeatureName;
+        [DataMember]
+        public string FeatureName
+        {
+            get { return _featureInfo.FeatureName;  }
+            set { }
+        }
 
         /// <summary>
-        /// Gets the state of the feature.
+        /// Gets or sets the state of the feature.
         /// </summary>
-        public DismPackageFeatureState FeatureState => _featureInfo.FeatureState;
+        [DataMember]
+        public DismPackageFeatureState FeatureState
+        {
+            get { return _featureInfo.FeatureState; }
+            set { }
+        }
 
         /// <summary>
-        /// Gets a value indicating whether a restart is required when installing or uninstalling the feature.
+        /// Gets or sets a value indicating whether a restart is required when installing or uninstalling the feature.
         /// </summary>
-        public DismRestartType RestartRequired => _featureInfo.RestartRequired;
+        [DataMember]
+        public DismRestartType RestartRequired
+        {
+            get { return _featureInfo.RestartRequired; }
+            set { }
+        }
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.

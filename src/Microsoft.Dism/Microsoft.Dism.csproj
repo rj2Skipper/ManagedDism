@@ -8,6 +8,9 @@
     <CopyArtifactsAfterTargets>Pack</CopyArtifactsAfterTargets>
     <DefaultArtifactsFileMatch>*nupkg</DefaultArtifactsFileMatch>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net40|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
 
   <PropertyGroup Label="Package properties">
     <IncludeSymbols>true</IncludeSymbols>
@@ -34,5 +37,47 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Roslyn.Diagnostics.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Roslynator.Analyzers" Version="2.1.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NetFramework.Analyzers" Version="2.9.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Build.Artifacts" Version="2.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Nerdbank.GitVersioning" Version="3.0.26">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>build; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
