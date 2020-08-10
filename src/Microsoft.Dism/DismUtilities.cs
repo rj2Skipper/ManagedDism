@@ -61,6 +61,7 @@
 using Microsoft.Win32;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -223,25 +224,25 @@ namespace Microsoft.Dism
         /// <summary>
         /// Returns a DismGeneration enumeration indicating the latest DISM generation installed and available on the local system.
         /// </summary>
-        /// <returns>A <see cref="DismGeneration"/> indicating the lastest DISM generation installed if found, otherwise <see cref="DismGeneration.NotFound"/>.</returns>
+        /// <returns>A <see cref="DismGeneration" /> indicating the lastest DISM generation installed if found, otherwise <see cref="DismGeneration.NotFound" />.</returns>
         public static DismGeneration GetLatestDismGeneration()
         {
-            if (!String.IsNullOrEmpty(WADK10DismApiPath))
+            if (!string.IsNullOrEmpty(WADK10DismApiPath))
             {
                 return DismGeneration.Win10;
             }
 
-            if (!String.IsNullOrEmpty(WADK81DISMAPIPath))
+            if (!string.IsNullOrEmpty(WADK81DISMAPIPath))
             {
                 return DismGeneration.Win8_1;
             }
 
-            if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
+            if (!string.IsNullOrEmpty(WADK80DISMAPIPath))
             {
                 return DismGeneration.Win8;
             }
 
-            if (!String.IsNullOrEmpty(WADK80DISMAPIPath))
+            if (!string.IsNullOrEmpty(WADK80DISMAPIPath))
             {
                 return DismGeneration.Win7;
             }
@@ -312,11 +313,17 @@ namespace Microsoft.Dism
         /// Throws an exception if the specified function fails.
         /// </summary>
         /// <param name="hresult">An HRESULT value from a function return to check.</param>
-        /// <param name="session">An optional <see cref="DismSession"/> to reload if necessary.</param>
-        internal static void ThrowIfFail(int hresult, DismSession session = null)
+        /// <param name="session">An optional <see cref="DismSession" /> to reload if necessary.</param>
+        /// <param name="callerMemberName">The name of the calling member.</param>
+        internal static void ThrowIfFail(int hresult, DismSession session = null, [CallerMemberName] string callerMemberName = null)
         {
-            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED && session != null)
+            if (hresult == DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED)
             {
+                if (session == null)
+                {
+                    throw new DismException(hresult, $"The {callerMemberName} function returned {nameof(DismApi.DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED)} but was not passed a session to reload.");
+                }
+
                 // Reload the session if necessary
                 session.Reload();
 
@@ -325,7 +332,7 @@ namespace Microsoft.Dism
 
             if (hresult != DismApi.ERROR_SUCCESS)
             {
-                throw DismException.GetDismExceptionForHResult(hresult);
+                throw DismException.GetDismExceptionForHResult(hresult) ?? new DismException(hresult, $"The {callerMemberName} function returned the error code 0x{hresult:X8}");
             }
         }
 
@@ -340,7 +347,7 @@ namespace Microsoft.Dism
             /// <param name="hModule">A handle to the loaded library module.</param>
             /// <returns>If the function succeeds, the return value is a handle to the module.
             ///
-            /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error"/>.</returns>
+            /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error" />.</returns>
             [DllImport("kernel32.dll")]
             public static extern bool FreeLibrary(IntPtr hModule);
 
@@ -350,7 +357,7 @@ namespace Microsoft.Dism
             /// <param name="lpFileName">The name of the module. This can be either a library module (a .dll file) or an executable module (an .exe file).</param>
             /// <returns>If the function succeeds, the return value is a handle to the module.
             ///
-            /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error"/>.</returns>
+            /// If the function fails, the return value is NULL.To get extended error information, call <see cref="Marshal.GetLastWin32Error" />.</returns>
             [DllImport("kernel32.dll")]
             public static extern IntPtr LoadLibrary([MarshalAs(UnmanagedType.LPStr)] string lpFileName);
         }

@@ -2,7 +2,6 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Win32;
 using System;
 using System.Runtime.InteropServices;
 
@@ -14,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes a Windows® Imaging Format (WIM) file.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824792.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824792.aspx" />
         /// typedef struct _DismWimCustomizedInfo
         /// {
         ///     UINT Size;
@@ -45,12 +44,12 @@ namespace Microsoft.Dism
             /// <summary>
             /// The time that the image file was created.
             /// </summary>
-            public SYSTEMTIME CreatedTime;
+            public SystemTime CreatedTime;
 
             /// <summary>
             /// The time that the image file was last modified.
             /// </summary>
-            public SYSTEMTIME ModifiedTime;
+            public SystemTime ModifiedTime;
         }
     }
 
@@ -62,27 +61,31 @@ namespace Microsoft.Dism
         private readonly DismApi.DismWimCustomizedInfo_ _wimCustomizedInfo;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo" /> class.
         /// </summary>
-        /// <param name="wimCustomizedInfoPtr">A pointer to a native <see cref="DismApi.DismWimCustomizedInfo_"/> struct.</param>
+        /// <param name="wimCustomizedInfoPtr">A pointer to a native <see cref="DismApi.DismWimCustomizedInfo_" /> struct.</param>
         internal DismWimCustomizedInfo(IntPtr wimCustomizedInfoPtr)
             : this(wimCustomizedInfoPtr.ToStructure<DismApi.DismWimCustomizedInfo_>())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo"/> class.
+        /// Initializes a new instance of the <see cref="DismWimCustomizedInfo" /> class.
         /// </summary>
-        /// <param name="wimCustomizedInfo">A native <see cref="DismApi.DismWimCustomizedInfo_"/> struct to copy data from.</param>
+        /// <param name="wimCustomizedInfo">A native <see cref="DismApi.DismWimCustomizedInfo_" /> struct to copy data from.</param>
         internal DismWimCustomizedInfo(DismApi.DismWimCustomizedInfo_ wimCustomizedInfo)
         {
             _wimCustomizedInfo = wimCustomizedInfo;
+
+            CreatedTime = _wimCustomizedInfo.CreatedTime;
+
+            ModifiedTime = _wimCustomizedInfo.ModifiedTime;
         }
 
         /// <summary>
         /// Gets the time that the image file was created.
         /// </summary>
-        public DateTime CreatedTime => _wimCustomizedInfo.CreatedTime;
+        public DateTime CreatedTime { get; }
 
         /// <summary>
         /// Gets the number of directories in the image.
@@ -97,7 +100,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Gets the time that the image file was last modified.
         /// </summary>
-        public DateTime ModifiedTime => _wimCustomizedInfo.ModifiedTime;
+        public DateTime ModifiedTime { get; }
 
         /// <summary>
         /// Gets the size of the customized info.
@@ -105,20 +108,20 @@ namespace Microsoft.Dism
         public long Size => _wimCustomizedInfo.Size;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismWimCustomizedInfo);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismWimCustomizedInfo"/> is equal to the current <see cref="DismWimCustomizedInfo"/>.
+        /// Determines whether the specified <see cref="DismWimCustomizedInfo" /> is equal to the current <see cref="DismWimCustomizedInfo" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismWimCustomizedInfo"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismWimCustomizedInfo"/> is equal to the current <see cref="DismWimCustomizedInfo"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismWimCustomizedInfo" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismWimCustomizedInfo" /> is equal to the current <see cref="DismWimCustomizedInfo" />; otherwise, false.</returns>
         public bool Equals(DismWimCustomizedInfo other)
         {
             return other != null
@@ -132,7 +135,7 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return CreatedTime.GetHashCode()

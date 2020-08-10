@@ -24,6 +24,16 @@ namespace Microsoft.Dism.Tests
         }
 
         [Fact]
+        public void DismPackageNotApplicableExceptionTest()
+        {
+            Exception exception = DismException.GetDismExceptionForHResult(unchecked((int)DismApi.CBS_E_NOT_APPLICABLE));
+
+            exception.ShouldBeOfType<DismPackageNotApplicableException>();
+
+            exception.Message.ShouldBe(Resources.DismExceptionMessagePackageNotApplicable);
+        }
+
+        [Fact]
         public void DismRebootRequiredExceptionTest()
         {
             VerifyDismException<DismRebootRequiredException>(DismApi.ERROR_SUCCESS_REBOOT_REQUIRED, Resources.DismExceptionMessageRebootRequired);
@@ -55,6 +65,24 @@ namespace Microsoft.Dism.Tests
             exception.ShouldBeOfType<OperationCanceledException>();
 
             exception.Message.ShouldBe(errorMessage);
+        }
+
+        [Fact]
+        public void ReloadSessionRequiredButNoSession()
+        {
+            DismException exception = Should.Throw<DismException>(() => DismUtilities.ThrowIfFail(1, session: null));
+
+            exception.HResult.ShouldBe(1);
+            exception.Message.ShouldBe($"The {nameof(ReloadSessionRequiredButNoSession)} function returned DISMAPI_S_RELOAD_IMAGE_SESSION_REQUIRED but was not passed a session to reload.");
+        }
+
+        [Fact]
+        public void UnknownErrorThrowsDismExceptionWithHResult()
+        {
+            DismException exception = Should.Throw<DismException>(() => DismUtilities.ThrowIfFail(3));
+
+            exception.HResult.ShouldBe(3);
+            exception.Message.ShouldBe($"The {nameof(UnknownErrorThrowsDismExceptionWithHResult)} function returned the error code 0x00000003");
         }
 
         [Fact]

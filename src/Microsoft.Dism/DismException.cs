@@ -17,7 +17,7 @@ namespace Microsoft.Dism
     public class DismException : Win32Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// Initializes a new instance of the <see cref="DismException" /> class.
         /// </summary>
         public DismException()
             : base()
@@ -25,7 +25,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// Initializes a new instance of the <see cref="DismException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         public DismException(string message)
@@ -34,7 +34,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// Initializes a new instance of the <see cref="DismException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
@@ -44,7 +44,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// Initializes a new instance of the <see cref="DismException" /> class.
         /// </summary>
         /// <param name="error">The error code for the error.</param>
         public DismException(int error)
@@ -53,7 +53,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class with a specified error that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="DismException" /> class with a specified error that is the cause of this exception.
         /// </summary>
         /// <param name="errorCode">The HRESULT, a coded numerical value that is assigned to a specific exception.</param>
         /// <param name="message">The error message that explains the reason for the exception.</param>
@@ -64,20 +64,20 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismException"/> class.
+        /// Initializes a new instance of the <see cref="DismException" /> class.
         /// </summary>
-        /// <param name="serializationInfo">The <see cref="SerializationInfo"/>.</param>
-        /// <param name="streamingContext">The <see cref="StreamingContext"/>.</param>
+        /// <param name="serializationInfo">The <see cref="SerializationInfo" />.</param>
+        /// <param name="streamingContext">The <see cref="StreamingContext" />.</param>
         protected DismException(SerializationInfo serializationInfo, StreamingContext streamingContext)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Gets a <see cref="DismException"/> or <see cref="Exception"/> for the specified error code.
+        /// Gets a <see cref="DismException" /> or <see cref="Exception" /> for the specified error code.
         /// </summary>
         /// <param name="errorCode">The error code to get an exception for.</param>
-        /// <returns>A <see cref="DismException"/> or <see cref="Exception"/> that represents the error code.</returns>
+        /// <returns>A <see cref="DismException" /> or <see cref="Exception" /> that represents the error code.</returns>
         internal static Exception GetDismExceptionForHResult(int errorCode)
         {
             // Look for known error codes
@@ -99,13 +99,16 @@ namespace Microsoft.Dism
                 case DismApi.DISMAPI_E_OPEN_SESSION_HANDLES:
                     // User has not called CloseSession() on open sessions
                     return new DismOpenSessionsException(errorCode);
+
+                case DismApi.CBS_E_NOT_APPLICABLE:
+                    return new DismPackageNotApplicableException(errorCode);
             }
 
             // Attempt to get an error message from the DismApi
             string lastError = DismApi.GetLastErrorMessage();
 
             // See if the result is not null
-            if (!String.IsNullOrEmpty(lastError))
+            if (!string.IsNullOrEmpty(lastError))
             {
                 // Return a DismException object
                 return new DismException(errorCode, lastError.Trim());
@@ -117,13 +120,13 @@ namespace Microsoft.Dism
     }
 
     /// <summary>
-    /// The exception that is thrown when an attempt to use the DismApi occurs without first calling <see cref="DismApi.Initialize(DismLogLevel)"/>.
+    /// The exception that is thrown when an attempt to use the DismApi occurs without first calling <see cref="DismApi.Initialize(DismLogLevel)" />.
     /// </summary>
     [Serializable]
     public sealed class DismNotInitializedException : DismException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// Initializes a new instance of the <see cref="DismNotInitializedException" /> class.
         /// </summary>
         public DismNotInitializedException()
             : base()
@@ -131,7 +134,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// Initializes a new instance of the <see cref="DismNotInitializedException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         public DismNotInitializedException(string message)
@@ -140,7 +143,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// Initializes a new instance of the <see cref="DismNotInitializedException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
@@ -150,7 +153,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismNotInitializedException"/> class.
+        /// Initializes a new instance of the <see cref="DismNotInitializedException" /> class.
         /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismNotInitializedException(int errorCode)
@@ -171,7 +174,7 @@ namespace Microsoft.Dism
     public sealed class DismOpenSessionsException : DismException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException" /> class.
         /// </summary>
         public DismOpenSessionsException()
             : base()
@@ -179,7 +182,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         public DismOpenSessionsException(string message)
@@ -188,7 +191,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
@@ -198,7 +201,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismOpenSessionsException"/> class.
+        /// Initializes a new instance of the <see cref="DismOpenSessionsException" /> class.
         /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismOpenSessionsException(int errorCode)
@@ -213,13 +216,56 @@ namespace Microsoft.Dism
     }
 
     /// <summary>
+    /// The exception that is thrown when a package is not applicable to a particular session.
+    /// </summary>
+    [Serializable]
+    public sealed class DismPackageNotApplicableException : DismException
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="errorCode">The error code to associate with the exception.</param>
+        public DismPackageNotApplicableException(int errorCode)
+        : base(errorCode, Resources.DismExceptionMessagePackageNotApplicable)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        public DismPackageNotApplicableException()
+            : base()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        public DismPackageNotApplicableException(string message)
+            : base(message)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DismPackageNotApplicableException"/> class.
+        /// </summary>
+        /// <param name="message">The message that describes the error. </param>
+        /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
+        public DismPackageNotApplicableException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
+    }
+
+    /// <summary>
     /// The exception that is thrown when the previous operations requires a reboot.
     /// </summary>
     [Serializable]
     public sealed class DismRebootRequiredException : DismException
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException" /> class.
         /// </summary>
         public DismRebootRequiredException()
             : base()
@@ -227,7 +273,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         public DismRebootRequiredException(string message)
@@ -236,7 +282,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException" /> class.
         /// </summary>
         /// <param name="message">The message that describes the error. </param>
         /// <param name="innerException">The exception that is the cause of the current exception, or a null reference (<see langword="Nothing" /> in Visual Basic) if no inner exception is specified. </param>
@@ -246,7 +292,7 @@ namespace Microsoft.Dism
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismRebootRequiredException"/> class.
+        /// Initializes a new instance of the <see cref="DismRebootRequiredException" /> class.
         /// </summary>
         /// <param name="errorCode">The error code to associate with the exception.</param>
         internal DismRebootRequiredException(int errorCode)

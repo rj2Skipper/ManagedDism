@@ -2,9 +2,7 @@
 //
 // Licensed under the MIT license.
 
-using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace Microsoft.Dism
@@ -15,7 +13,7 @@ namespace Microsoft.Dism
         /// Describes basic information about a package, including the date and time that the package was installed.
         /// </summary>
         /// <remarks>
-        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824763.aspx"/>
+        /// <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/hh824763.aspx" />
         /// typedef struct _DismPackage
         /// {
         ///     PCWSTR PackageName;
@@ -45,7 +43,7 @@ namespace Microsoft.Dism
             /// <summary>
             /// The date and time that the package was installed. This field is local time relative to the servicing host computer.
             /// </summary>
-            public SYSTEMTIME InstallTime;
+            public SystemTime InstallTime;
         }
     }
 
@@ -57,27 +55,20 @@ namespace Microsoft.Dism
         private readonly DismApi.DismPackage_ _package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackage"/> class.
+        /// Initializes a new instance of the <see cref="DismPackage" /> class.
         /// </summary>
-        /// <param name="packagePtr">A pointer to a native DismPackage_ struct.</param>
-        internal DismPackage(IntPtr packagePtr)
-            : this(packagePtr.ToStructure<DismApi.DismPackage_>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackage"/> class.
-        /// </summary>
-        /// <param name="package">A <see cref="DismApi.DismPackage_"/> structure.</param>
+        /// <param name="package">A <see cref="DismApi.DismPackage_" /> structure.</param>
         internal DismPackage(DismApi.DismPackage_ package)
         {
             _package = package;
+
+            InstallTime = _package.InstallTime;
         }
 
         /// <summary>
         /// Gets the date and time the package was installed.
         /// </summary>
-        public DateTime InstallTime => _package.InstallTime;
+        public DateTime InstallTime { get; }
 
         /// <summary>
         /// Gets the package name.
@@ -95,20 +86,20 @@ namespace Microsoft.Dism
         public DismReleaseType ReleaseType => _package.ReleaseType;
 
         /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+        /// Determines whether the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>; otherwise, false.</returns>
+        /// <returns>true if the specified <see cref="T:System.Object" /> is equal to the current <see cref="T:System.Object" />; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
             return obj != null && Equals(obj as DismPackage);
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="DismPackage"/> is equal to the current <see cref="DismPackage"/>.
+        /// Determines whether the specified <see cref="DismPackage" /> is equal to the current <see cref="DismPackage" />.
         /// </summary>
-        /// <param name="other">The <see cref="DismPackage"/> object to compare with the current object.</param>
-        /// <returns>true if the specified <see cref="DismPackage"/> is equal to the current <see cref="DismPackage"/>; otherwise, false.</returns>
+        /// <param name="other">The <see cref="DismPackage" /> object to compare with the current object.</param>
+        /// <returns>true if the specified <see cref="DismPackage" /> is equal to the current <see cref="DismPackage" />; otherwise, false.</returns>
         public bool Equals(DismPackage other)
         {
             return other != null
@@ -121,36 +112,13 @@ namespace Microsoft.Dism
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
-        /// <returns>A hash code for the current <see cref="T:System.Object"/>.</returns>
+        /// <returns>A hash code for the current <see cref="T:System.Object" />.</returns>
         public override int GetHashCode()
         {
             return InstallTime.GetHashCode()
-                   ^ (String.IsNullOrEmpty(PackageName) ? 0 : PackageName.GetHashCode())
+                   ^ (string.IsNullOrEmpty(PackageName) ? 0 : PackageName.GetHashCode())
                    ^ PackageState.GetHashCode()
                    ^ ReleaseType.GetHashCode();
-        }
-    }
-
-    /// <summary>
-    /// Represents a collection of <see cref="DismPackage"/> objects.
-    /// </summary>
-    public sealed class DismPackageCollection : DismCollection<DismPackage>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageCollection"/> class.
-        /// </summary>
-        internal DismPackageCollection()
-            : base(new List<DismPackage>())
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DismPackageCollection"/> class.
-        /// </summary>
-        /// <param name="list">An existing list of DismPackage objects to expose as a read-only collection.</param>
-        internal DismPackageCollection(IList<DismPackage> list)
-            : base(list)
-        {
         }
     }
 }
