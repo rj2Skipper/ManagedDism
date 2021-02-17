@@ -179,9 +179,6 @@
     <Compile Include="..\..\src\Microsoft.Dism\DismCapabilityInfo.cs">
       <Link>ManagedDism\DismCapabilityInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Microsoft.Dism\DismCollection.cs">
-      <Link>ManagedDism\DismCollection.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\Microsoft.Dism\DismCustomProperty.cs">
       <Link>ManagedDism\DismCustomProperty.cs</Link>
     </Compile>
@@ -245,29 +242,55 @@
     <Compile Include="..\..\src\Microsoft.Dism\NativeEnums.cs">
       <Link>ManagedDism\NativeEnums.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Microsoft.Dism\NativeStructs.cs">
-      <Link>ManagedDism\NativeStructs.cs</Link>
+    <Compile Include="..\Microsoft.Dism\CallerMemberNameAttribute.cs">
+      <Link>ManagedDism\CallerMemberNameAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\Microsoft.Dism\Properties\AssemblyInfo.cs">
-      <Link>ManagedDism\AssemblyInfo.cs</Link>
+    <Compile Include="..\Microsoft.Dism\DismAppxPackageCollection.cs">
+      <Link>ManagedDism\DismAppxPackageCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismCapabilityCollection.cs">
+      <Link>ManagedDism\DismCapabilityCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismCustomPropertyCollection.cs">
+      <Link>ManagedDism\DismCustomPropertyCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismDriverCollection.cs">
+      <Link>ManagedDism\DismDriverCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismDriverPackageCollection.cs">
+      <Link>ManagedDism\DismDriverPackageCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismFeatureCollection.cs">
+      <Link>ManagedDism\DismFeatureCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismImageInfoCollection.cs">
+      <Link>ManagedDism\DismImageInfoCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismMountedImageInfoCollection.cs">
+      <Link>ManagedDism\DismMountedImageInfoCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\DismPackageCollection.cs">
+      <Link>ManagedDism\DismPackageCollection.cs</Link>
     </Compile>
     <Compile Include="..\Microsoft.Dism\Properties\Resources.Designer.cs">
       <Link>ManagedDism\Resources.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\Microsoft.Dism\SystemTime.cs">
+      <Link>ManagedDism\SystemTime.cs</Link>
     </Compile>
     <Compile Include="..\Microsoft.Dism\TestHooks.cs">
       <Link>ManagedDism\TestHooks.cs</Link>
     </Compile>
     <Compile Include="JsonSerializeExtension.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Microsoft.Dism\Properties\Resources.resx">
       <Link>ManagedDism\Resources.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -277,4 +300,9 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>IF $(ConfigurationName)==Release (
+call "$(FERRARI_PROJECTS)\verisign\sign.bat" "$(FERRARI_PROJECTS)\verisign\ferrari_sign.pfx" "$(TargetPath)"
+)</PostBuildEvent>
+  </PropertyGroup>
 </Project>
